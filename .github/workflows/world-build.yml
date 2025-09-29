@@ -21,6 +21,10 @@ on:
 jobs:
   run-main:
     runs-on: [self-hosted]
+    container:
+      image: skandigraun/yocto:latest
+      volumes:
+        - cocto:/cocto
     steps:
       - name: Prepare
         run: |
