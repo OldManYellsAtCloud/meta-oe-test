@@ -49,6 +49,7 @@ jobs:
            echo "BBFILES ?= \"\"" >> conf/bblayers.conf
            echo "BBLAYERS ?= \" \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/poky/meta \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/poky/meta-poky \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-filesystems \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-gnome \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-initramfs \\" >> conf/bblayers.conf
