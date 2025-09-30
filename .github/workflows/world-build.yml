@@ -29,7 +29,7 @@ jobs:
       - name: Prepare
         run: |
            cd /cocto/${{ github.event.inputs.branch}}-next
-           rm -rf ./meta-openembedded ./poky ./build/tmp
+           rm -rf ./meta-openembedded ./poky
            git clone -b stable/${{ github.event.inputs.branch }}-nut https://git.openembedded.org/meta-openembedded-contrib meta-openembedded
            git clone -b ${{ github.event.inputs.branch }} https://git.yoctoproject.org/poky
            git -C ./meta-openembedded pull
