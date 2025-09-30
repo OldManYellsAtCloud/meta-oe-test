@@ -26,10 +26,10 @@ jobs:
       volumes:
         - cocto:/cocto
     steps:
-      - name: Prepare
+      - name: Prepare and Build
         run: |
            cd /cocto/${{ github.event.inputs.branch}}-next
-           rm -rf ./meta-openembedded ./poky
+           rm -rf ./meta-openembedded ./poky ./build/conf
            git clone -b stable/${{ github.event.inputs.branch }}-nut https://git.openembedded.org/meta-openembedded-contrib meta-openembedded
            git clone -b ${{ github.event.inputs.branch }} https://git.yoctoproject.org/poky
            git -C ./meta-openembedded pull
@@ -63,5 +63,4 @@ jobs:
            echo "BB_NUMBER_THREADS = \"12\"" >> conf/local.conf
            echo "PARALLEL_MAKE = \"-j 8\"" >> conf/local.conf
            echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/local.conf
-      - name: Build
-        run: MACHINE=${{ github.event.inputs.arch}} bitbake world
+           MACHINE=${{ github.event.inputs.arch}} bitbake world
