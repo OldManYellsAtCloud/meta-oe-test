@@ -43,7 +43,6 @@ jobs:
            echo -n "poky revision: "
            git -C ./poky log -n 1 --format=oneline
            cd poky
-           git revert ec065ce64c1d0155e8566c7dd12911ae0c7a04d0 -n 
            set /cocto/${{ github.event.inputs.branch }}-next/build
            . ./oe-init-build-env
            echo PWD: $(pwd)
