@@ -69,4 +69,4 @@ jobs:
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
-           MACHINE=${{ github.event.inputs.arch}} bitbake -k world
+           MACHINE=${{ github.event.inputs.arch}} bitbake -D -k world
