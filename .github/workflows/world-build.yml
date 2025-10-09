@@ -43,7 +43,7 @@ jobs:
            echo -n "poky revision: "
            git -C ./poky log -n 1 --format=oneline
            cd poky
-           set /cocto/${{ github.event.input.branch }}-next/build
+           set /cocto/${{ github.event.inputs.branch }}-next/build
            . ./oe-init-build-env
            echo PWD: $(pwd)
            echo "POKY_BBLAYERS_CONF_VERSION = \"2\"" > conf/bblayers.conf
