@@ -60,8 +60,11 @@ jobs:
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-python \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-webserver \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-xfce \"" >> conf/bblayers.conf
-           echo "INHERIT += \"rm_work\"" >> conf/local.conf
-           echo "BB_NUMBER_THREADS = \"12\"" >> conf/local.conf
-           echo "PARALLEL_MAKE = \"-j 8\"" >> conf/local.conf
-           echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/local.conf
-           MACHINE=${{ github.event.inputs.arch}} bitbake world
+           echo "INHERIT += \"rm_work\"" >> conf/myconf.conf
+           echo "BB_NUMBER_THREADS = \"12\"" >> conf/myconf.conf
+           echo "PARALLEL_MAKE = \"-j 8\"" >> conf/myconf.conf
+           echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/myconf.conf
+           echo "require myconf.conf" >> conf/local.conf
+           echo Content of myconf.conf:
+           cat conf/myconf.conf
+           MACHINE=${{ github.event.inputs.arch}} bitbake -k world
