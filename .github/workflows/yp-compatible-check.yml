@@ -9,14 +9,6 @@ on:
         options:
         - kirkstone
         - walnascar
-      arch:
-        description: "Arch to test"
-        type: choice
-        options:
-        - qemuarm
-        - qemuarm64
-        - qemux86
-        - qemux86-64
 
 jobs:
   run-main:
