@@ -1,0 +1,72 @@
+name: meta-oe YP compatibility check
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to test"
+        type: choice
+        options:
+        - kirkstone
+        - walnascar
+      arch:
+        description: "Arch to test"
+        type: choice
+        options:
+        - qemuarm
+        - qemuarm64
+        - qemux86
+        - qemux86-64
+
+jobs:
+  run-main:
+    runs-on: [self-hosted]
+    container:
+      image: skandigraun/yocto:latest
+      volumes:
+        - cocto:/cocto
+    steps:
+      - name: Prepare and Build
+        run: |
+           cd /cocto/${{ github.event.inputs.branch}}-next
+           rm -rf ./meta-openembedded ./poky ./build/conf
+           git clone -b stable/${{ github.event.inputs.branch }}-nut https://git.openembedded.org/meta-openembedded-contrib meta-openembedded
+           git clone -b ${{ github.event.inputs.branch }} https://git.yoctoproject.org/poky
+           git -C ./meta-openembedded pull
+           git -C ./poky pull
+           echo -n "meta-oe branch: "
+           git -C ./meta-openembedded branch
+           echo -n "meta-oe revision: "
+           git -C ./meta-openembedded log -n 1 --format=oneline
+           echo -n "poky branch: "
+           git -C ./poky branch
+           echo -n "poky revision: "
+           git -C ./poky log -n 1 --format=oneline
+           cd poky
+           set /cocto/${{ github.event.inputs.branch }}-next/build
+           . ./oe-init-build-env
+           echo PWD: $(pwd)
+           echo "POKY_BBLAYERS_CONF_VERSION = \"2\"" > conf/bblayers.conf
+           echo "BBPATH = \"\${TOPDIR}\"" >> conf/bblayers.conf
+           echo "BBFILES ?= \"\"" >> conf/bblayers.conf
+           echo "BBLAYERS ?= \" \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/poky/meta \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/poky/meta-poky \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-filesystems \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-gnome \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-initramfs \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-multimedia \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-networking \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-oe \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-perl \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-python \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-webserver \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-xfce \"" >> conf/bblayers.conf
+           echo "INHERIT += \"rm_work\"" >> conf/myconf.conf
+           echo "BB_NUMBER_THREADS = \"8\"" >> conf/myconf.conf
+           echo "PARALLEL_MAKE = \"-j 8\"" >> conf/myconf.conf
+           echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/myconf.conf
+           echo "require myconf.conf" >> conf/local.conf
+           echo Content of myconf.conf:
+           cat conf/myconf.conf
+           yocto-check-layer-wrapper ../meta-openembedded/
