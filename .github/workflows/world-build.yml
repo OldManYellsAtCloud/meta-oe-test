@@ -1,4 +1,4 @@
-name: meta-oe world build
+name: meta-oe world build: ${{ github.event.inputs.branch }} - ${{ github.event.inputs.arch }}
 
 on:
   workflow_dispatch:
@@ -69,4 +69,7 @@ jobs:
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
-           MACHINE=${{ github.event.inputs.arch}} bitbake -k world
+           MACHINE=${{ github.event.inputs.arch }} bitbake -k nodejs
+           MACHINE=${{ github.event.inputs.arch }} bitbake -k webkitgtk
+           MACHINE=${{ github.event.inputs.arch }} bitbake -k webkitgtk3
+           MACHINE=${{ github.event.inputs.arch }} bitbake -k world
