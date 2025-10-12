@@ -1,4 +1,4 @@
-name: meta-oe world build: ${{ github.event.inputs.branch }} - ${{ github.event.inputs.arch }}
+name: meta-oe world build
 
 on:
   workflow_dispatch:
@@ -28,6 +28,7 @@ jobs:
     steps:
       - name: Prepare and Build
         run: |
+           echo Running configuration: ${{ github.event.inputs.branch }} - ${{ github.event.inputs.arch }}
            cd /cocto/${{ github.event.inputs.branch}}-next
            rm -rf ./meta-openembedded ./poky ./build/conf
            git clone -b stable/${{ github.event.inputs.branch }}-nut https://git.openembedded.org/meta-openembedded-contrib meta-openembedded
