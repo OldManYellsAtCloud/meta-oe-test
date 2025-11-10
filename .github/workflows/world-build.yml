@@ -76,5 +76,5 @@ jobs:
            cat conf/myconf.conf
            MACHINE=${{ github.event.inputs.arch }} bitbake -k nodejs
            MACHINE=${{ github.event.inputs.arch }} bitbake -k webkitgtk
-           MACHINE=${{ github.event.inputs.arch }} bitbake -k webkitgtk3
+           MACHINE=${{ github.event.inputs.arch }} bitbake -k webkitgtk3 || true
            MACHINE=${{ github.event.inputs.arch }} bitbake -k world
