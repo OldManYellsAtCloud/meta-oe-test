@@ -80,6 +80,7 @@ jobs:
            echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
            echo "ENABLE_BUSYBOX_STATIC = \"1\"" >> conf/myconf.conf
            echo "PACKAGECONFIG:append:pn-ostree = \" static\"" >> conf/myconf.conf
+           echo "RDEPENDS:append:pn-poco-ptest = \" mongodb \"" >> conf/myconf.conf
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
