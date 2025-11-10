@@ -43,7 +43,7 @@ jobs:
            git -C ./poky branch
            echo -n "poky revision: "
            git -C ./poky log -n 1 --format=oneline
-           cd poky
+           cd poky || cd oe-core || cd openembedded-core
            set /cocto/${{ github.event.inputs.branch }}-next/build
            . ./oe-init-build-env
            echo PWD: $(pwd)
@@ -67,6 +67,10 @@ jobs:
            echo "BB_NUMBER_THREADS = \"8\"" >> conf/myconf.conf
            echo "PARALLEL_MAKE = \"-j 8\"" >> conf/myconf.conf
            echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/myconf.conf
+           echo "FORTRAN:forcevariable = \",fortran\"" >> conf/myconf.conf
+           echo "RUNTIMETARGET:append:pn-gcc-runtime = \" libquadmath\"" >> conf/myconf.conf
+           echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr\"" >> conf/myconf.conf
+           echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf

@@ -1,4 +1,4 @@
-name: meta-oe YP compatibility check
+name: meta-oe ptest
 
 on:
   workflow_dispatch:
@@ -9,6 +9,14 @@ on:
         options:
         - kirkstone
         - walnascar
+      arch:
+        description: "Arch to test"
+        type: choice
+        options:
+        - qemuarm
+        - qemuarm64
+        - qemux86
+        - qemux86-64
 
 jobs:
   run-main:
@@ -20,12 +28,15 @@ jobs:
     steps:
       - name: Prepare and Build
         run: |
+           echo Running configuration: ${{ github.event.inputs.branch }} - ${{ github.event.inputs.arch }}
            cd /cocto/${{ github.event.inputs.branch}}-next
-           rm -rf ./meta-openembedded ./poky ./build/conf
+           rm -rf ./meta-openembedded ./poky ./build/conf ./meta-oe-test
            git clone -b stable/${{ github.event.inputs.branch }}-nut https://git.openembedded.org/meta-openembedded-contrib meta-openembedded
            git clone -b ${{ github.event.inputs.branch }} https://git.yoctoproject.org/poky
+           git clone https://github.com/OldManYellsAtCloud/meta-oe-test.git
            git -C ./meta-openembedded pull
            git -C ./poky pull
+           git -C ./meta-oe-test pull
            echo -n "meta-oe branch: "
            git -C ./meta-openembedded branch
            echo -n "meta-oe revision: "
@@ -34,7 +45,11 @@ jobs:
            git -C ./poky branch
            echo -n "poky revision: "
            git -C ./poky log -n 1 --format=oneline
-           cd poky
+           echo -n "meta-oe-test branch: "
+           git -C ./meta-oe-test branch
+           echo -n "meta-oe-test revision: "
+           git -C ./meta-oe-test log - 1 --format=oneline
+           cd poky || cd oe-core || cd openembedded-core
            set /cocto/${{ github.event.inputs.branch }}-next/build
            . ./oe-init-build-env
            echo PWD: $(pwd)
@@ -53,7 +68,8 @@ jobs:
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-perl \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-python \\" >> conf/bblayers.conf
            echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-webserver \\" >> conf/bblayers.conf
-           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-xfce \"" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-openembedded/meta-xfce \\" >> conf/bblayers.conf
+           echo "/cocto/${{ github.event.inputs.branch }}-next/meta-oe-test \"" >> conf/bblayers.conf
            echo "INHERIT += \"rm_work\"" >> conf/myconf.conf
            echo "BB_NUMBER_THREADS = \"8\"" >> conf/myconf.conf
            echo "PARALLEL_MAKE = \"-j 8\"" >> conf/myconf.conf
@@ -62,7 +78,10 @@ jobs:
            echo "RUNTIMETARGET:append:pn-gcc-runtime = \" libquadmath\"" >> conf/myconf.conf
            echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr\"" >> conf/myconf.conf
            echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
+           echo "ENABLE_BUSYBOX_STATIC = \"1\"" >> conf/myconf.conf
+           echo "PACKAGECONFIG:append:pn-ostree = \" static\"" >> conf/myconf.conf
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
-           yocto-check-layer-wrapper ../meta-openembedded/
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest -c testimage
