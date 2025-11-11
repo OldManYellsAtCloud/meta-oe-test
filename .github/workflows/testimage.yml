@@ -48,7 +48,7 @@ jobs:
            echo -n "meta-oe-test branch: "
            git -C ./meta-oe-test branch
            echo -n "meta-oe-test revision: "
-           git -C ./meta-oe-test log - 1 --format=oneline
+           git -C ./meta-oe-test log -n 1 --format=oneline
            cd poky || cd oe-core || cd openembedded-core
            set /cocto/${{ github.event.inputs.branch }}-next/build
            . ./oe-init-build-env
