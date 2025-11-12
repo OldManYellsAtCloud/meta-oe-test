@@ -10,6 +10,3 @@ IMAGE_INSTALL += "openssh"
 
 IMAGE_INSTALL += "libencode-perl-ptest"
 
-#QB_MEM = "-m 2048"
-#IMAGE_ROOTFS_EXTRA_SPACE = "1024288"
-

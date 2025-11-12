@@ -19,7 +19,7 @@ on:
         - qemux86-64
 
 jobs:
-  run-main:
+  build-test-image:
     runs-on: [self-hosted]
     container:
       image: skandigraun/yocto:latest
@@ -80,9 +80,25 @@ jobs:
            echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
            echo "ENABLE_BUSYBOX_STATIC = \"1\"" >> conf/myconf.conf
            echo "PACKAGECONFIG:append:pn-ostree = \" static\"" >> conf/myconf.conf
-           echo "RDEPENDS:append:pn-poco-ptest = \" mongodb \"" >> conf/myconf.conf
+           echo "RDEPENDS:poco-ptest:append = \" mongodb \"" >> conf/myconf.conf
+           echo "HOSTTOOLS += \"ip ping\"" >> conf/myconf.conf
+           echo "TEST_SUITES = \"ssh ping ptest parselogs\"" >> conf/myconf.conf
+           echo "TEST_RUNQEMUPARAMS = \"kvm nographic snapshot\"" >> conf/myconf.conf
+           echo "RCONFLICTS:libencode-perl:remove = \"perl-misc perl-module-encode\"" >> conf/myconf.conf
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
-           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest
-           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest -c testimage
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt
+  run-test-image:
+    runs-on: [self-hosted]
+    needs: build-test-image
+    steps:
+      - name: Run
+        run: |
+          cd /cocto/${{ github.event.inputs.branch}}-next
+          cd poky || cd oe-core || cd openembedded-core
+          set /cocto/${{ github.event.inputs.branch }}-next/build
+          . ./oe-init-build-env
+          MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest -c testimage
+          MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt -c testimage

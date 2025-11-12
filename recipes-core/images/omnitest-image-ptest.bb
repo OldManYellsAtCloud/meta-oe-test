@@ -48,7 +48,6 @@ oprofile-ptest \
 ostree-ptest \
 poco-ptest \
 protobuf-ptest \
-psqlodbc-ptest \
 pv-ptest \
 rocksdb-ptest \
 rsyslog-ptest \
@@ -68,7 +67,6 @@ python3-cbor2-ptest \
 python3-click-ptest \
 python3-dnspython-ptest \
 python3-dominate-ptest \
-python3-execnet-ptest \
 python3-fastjsonschema-ptest \
 python3-geojson-ptest \
 python3-gunicorn-ptest \
@@ -142,9 +140,7 @@ libhtml-tagset-perl-ptest \
 libio-socket-ssl-perl-ptest \
 libmime-types-perl-ptest \
 libnet-dns-perl-ptest \
-libnet-dns-sec-perl-ptest \
 libnet-ldap-perl-ptest \
-libnet-ssleay-perl-ptest \
 libstrictures-perl-ptest \
 libsub-uplevel-perl-ptest \
 libterm-readkey-perl-ptest \
@@ -163,7 +159,6 @@ geoip-perl-ptest \
 libnftnl-ptest \
 lksctp-tools-ptest \
 net-snmp-ptest \
-nftables-ptest \
 openhpi-ptest \
 openl2tp-ptest \
 python3-scapy-ptest \
@@ -171,8 +166,6 @@ squid-ptest \
 tcpdump-ptest \
 \
 libopenmpt-ptest \
-\
-clutter-1.0-ptest \
 \
 fuse3-ptest \
 sshfs-fuse-ptest \
