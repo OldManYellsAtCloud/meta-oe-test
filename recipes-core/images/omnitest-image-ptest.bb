@@ -169,6 +169,15 @@ libopenmpt-ptest \
 \
 fuse3-ptest \
 sshfs-fuse-ptest \
+\
+audiofile-ptest \
+imagemagick-ptest \
+\
+xrdp-ptest \
+gssdp-ptest \
+gupnp-ptest \
+gupnp-av-ptest \
+gupnp-igd-ptest \
 "
 
 QB_MEM = "-m 2048"
