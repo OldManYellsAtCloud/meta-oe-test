@@ -18,6 +18,10 @@ on:
         - qemux86
         - qemux86-64
 
+permissions:
+  id-token: write
+  attestations: write
+
 jobs:
   build-test-image:
     runs-on: [self-hosted]
@@ -96,9 +100,15 @@ jobs:
     steps:
       - name: Run
         run: |
-          cd /cocto/${{ github.event.inputs.branch}}-next
+          cd /cocto/${{ github.event.inputs.branch }}-next
           cd poky || cd oe-core || cd openembedded-core
           set /cocto/${{ github.event.inputs.branch }}-next/build
           . ./oe-init-build-env
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest -c testimage
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt -c testimage
+      - name: Tar artifacts
+        run: tar -xfz /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz ptest_logs.tar.gz /cocto/${{ github.event.inputs.branch }}-next/build/tmp/work/qemux86_64-poky-linux/omnitest-image-ptest*/1.0-r0/testimage/ptest_log.*
+      - name: Store artifacts
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz
