@@ -60,7 +60,6 @@ zeromq-ptest \
 python3-ansicolors-ptest \
 python3-appdirs-ptest \
 python3-aspectlib-ptest \
-python3-betamax-ptest \
 python3-blinker-ptest \
 python3-cachetools-ptest \
 python3-cbor2-ptest \
