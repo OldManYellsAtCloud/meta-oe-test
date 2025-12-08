@@ -76,7 +76,7 @@ jobs:
            echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/myconf.conf
            echo "FORTRAN:forcevariable = \",fortran\"" >> conf/myconf.conf
            echo "RUNTIMETARGET:append:pn-gcc-runtime = \" libquadmath\"" >> conf/myconf.conf
-           echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr\"" >> conf/myconf.conf
+           echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr pam\"" >> conf/myconf.conf
            echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
            echo "ENABLE_BUSYBOX_STATIC = \"1\"" >> conf/myconf.conf
            echo "PACKAGECONFIG:append:pn-ostree = \" static\"" >> conf/myconf.conf
