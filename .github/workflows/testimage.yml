@@ -107,7 +107,7 @@ jobs:
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest -c testimage
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt -c testimage
       - name: Tar artifacts
-        run: tar -xfz /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz ptest_logs.tar.gz /cocto/${{ github.event.inputs.branch }}-next/build/tmp/work/qemux86_64-poky-linux/omnitest-image-ptest*/1.0-r0/testimage/ptest_log.*
+        run: tar -xfz /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz /cocto/${{ github.event.inputs.branch }}-next/build/tmp/work/qemux86_64-poky-linux/omnitest-image-ptest*/1.0-r0/testimage/ptest_log.*
       - name: Store artifacts
         uses: actions/attest-build-provenance@v3
         with:
