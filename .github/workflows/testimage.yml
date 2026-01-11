@@ -112,6 +112,7 @@ jobs:
       - name: Tar artifacts
         run: tar -czf /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz /cocto/${{ github.event.inputs.branch }}-next/build/tmp/work/qemux86_64-poky-linux/omnitest-image-ptest*/1.0-r0/testimage/ptest_log.*
       - name: Store artifacts
-        uses: actions/attest-build-provenance@v3
+        uses: actions/upload-artifact@v4
         with:
-          subject-path: /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz
+          name: ptest-logs
+          path: /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz
