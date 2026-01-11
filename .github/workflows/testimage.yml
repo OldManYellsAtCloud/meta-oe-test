@@ -102,6 +102,9 @@ jobs:
         run: |
           cd /cocto/${{ github.event.inputs.branch }}-next
           cd poky || cd oe-core || cd openembedded-core
+          if [ "${{ github.event.inputs.branch }}" = "kirkstone" ]; then
+              patch -p 1 < ../meta-oe-test/files/0001-add-python3.14-compatibility.patch
+          fi
           set /cocto/${{ github.event.inputs.branch }}-next/build
           . ./oe-init-build-env
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest -c testimage
