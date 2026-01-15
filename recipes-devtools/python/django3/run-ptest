@@ -1,0 +1,10 @@
+#!/bin/sh
+useradd tester || echo test user exists already
+
+export PYTHONPATH=$(pwd):$PYTHONPATH
+
+cd tests
+
+# not all tests can run in parallel, because they use the
+# same temp folder, which they keep deleting from under each other
+su tester -c "./runtests.py --parallel 1"
