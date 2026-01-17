@@ -69,7 +69,11 @@ jobs:
            echo "LICENSE_FLAGS_ACCEPTED += \"commercial\"" >> conf/myconf.conf
            echo "FORTRAN:forcevariable = \",fortran\"" >> conf/myconf.conf
            echo "RUNTIMETARGET:append:pn-gcc-runtime = \" libquadmath\"" >> conf/myconf.conf
-           echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr pam\"" >> conf/myconf.conf
+           echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr pam usrmerge sysvinit ipv6 vulkan seccomp systemd polkit opencl gobject-introspection\"" >> conf/myconf.conf
+           echo "DISTRO_FEATURES_BACKFILL_CONSIDERED += \"sysvinit\"" >> conf/myconf.conf
+           echo "VIRTUAL-RUNTIME_init_manager = \"systemd\"" >> conf/myconf.conf
+           echo "VIRTUAL-RUNTIME_initscripts = \"systemd-compat-units\"" >> conf/myconf.conf
+           echo "PACKAGE_CLASSES += \"package_rpm\"" >> conf/myconf.conf
            echo "KERNEL_FEATURES:append:pn-linux-yocto = \" features/net/team/team.scc features/overlayfs/overlayfs.scc\"" >> conf/myconf.conf
            echo "require myconf.conf" >> conf/local.conf
            echo Content of myconf.conf:
