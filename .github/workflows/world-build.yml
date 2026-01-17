@@ -70,6 +70,7 @@ jobs:
            echo "FORTRAN:forcevariable = \",fortran\"" >> conf/myconf.conf
            echo "RUNTIMETARGET:append:pn-gcc-runtime = \" libquadmath\"" >> conf/myconf.conf
            echo "DISTRO_FEATURES += \"ptest x11 opengl wayland pulseaudio bluetooth xattr pam usrmerge sysvinit ipv6 vulkan seccomp systemd polkit opencl gobject-introspection\"" >> conf/myconf.conf
+           echo "DISTRO_FEATURES:remove:pn-tgt = \"systemd\"" >> conf/myconf.conf
            echo "DISTRO_FEATURES_BACKFILL_CONSIDERED += \"sysvinit\"" >> conf/myconf.conf
            echo "VIRTUAL-RUNTIME_init_manager = \"systemd\"" >> conf/myconf.conf
            echo "VIRTUAL-RUNTIME_initscripts = \"systemd-compat-units\"" >> conf/myconf.conf
