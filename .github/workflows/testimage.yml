@@ -89,11 +89,24 @@ jobs:
            echo "TEST_SUITES = \"ssh ping ptest parselogs\"" >> conf/myconf.conf
            echo "TEST_RUNQEMUPARAMS = \"kvm nographic snapshot\"" >> conf/myconf.conf
            echo "RCONFLICTS:libencode-perl:remove = \"perl-misc perl-module-encode\"" >> conf/myconf.conf
+           echo "PREFERRED_VERSION_python3-django = \"2.2.%\"" > conf/django.conf
            echo "require myconf.conf" >> conf/local.conf
+           echo "require django.conf" >> conf/local.conf
            echo Content of myconf.conf:
            cat conf/myconf.conf
+           echo Content of django.conf:
+           cat conf/django.conf
            MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest
            MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django2
+           echo "PREFERRED_VERSION_python3-django = \"3.2.%\"" > conf/django.conf
+           echo Content of django.conf:
+           cat conf/django.conf
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django3
+           echo "PREFERRED_VERSION_python3-django = \"4.2.%\"" > conf/django.conf
+           echo Content of django.conf:
+           cat conf/django.conf
+           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django4
   run-test-image:
     runs-on: [self-hosted]
     needs: build-test-image
@@ -109,6 +122,9 @@ jobs:
           . ./oe-init-build-env
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest -c testimage
           MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-alt -c testimage
+          MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django2 -c testimage
+          MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django3 -c testimage
+          MACHINE=${{ github.event.inputs.arch }} bitbake omnitest-image-ptest-django4 -c testimage
       - name: Tar artifacts
         run: tar -czf /cocto/${{ github.event.inputs.branch }}-next/ptest_logs.tar.gz /cocto/${{ github.event.inputs.branch }}-next/build/tmp/work/qemux86_64-poky-linux/omnitest-image-ptest*/1.0-r0/testimage/ptest_log.*
       - name: Store artifacts

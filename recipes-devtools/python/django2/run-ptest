@@ -7,4 +7,12 @@ cd tests
 
 # not all tests can run in parallel, because they use the
 # same temp folder, which they keep deleting from under each other
-su tester -c "./runtests.py --parallel 1"
+su tester -c "./runtests.py --noinput -v 2 --parallel 1" 2>&1 | \
+     tee ../testoutput.log | \
+     sed -e '/\.\.\. ok/ s/^/PASS: /g' \
+         -e '/\.\.\. \(ERROR\|FAIL\)/ s/^/FAIL: /g' \
+         -e '/\.\.\. skipped/ s/^/SKIP: /g' \
+         -e 's/ \.\.\. ok//g' \
+         -e 's/ \.\.\. ERROR//g' \
+         -e 's/ \.\.\. FAIL//g' \
+         -e 's/ \.\.\. skipped//g'

@@ -11,8 +11,6 @@ do_install_ptest(){
 }
 
 RDEPENDS:${PN}-ptest += " \
-    firefox \
-    geckodriver \
     gettext \
     python3-asgiref \
     python3-bcrypt \
