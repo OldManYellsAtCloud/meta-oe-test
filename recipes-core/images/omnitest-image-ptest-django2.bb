@@ -11,3 +11,5 @@ IMAGE_INSTALL += "python3-django-ptest"
 
 # there is a test in django 2 that fails :(
 PTEST_EXPECT_FAILURE = "1"
+
+QB_MEM = "-m 2048"

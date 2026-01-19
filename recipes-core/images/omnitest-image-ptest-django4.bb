@@ -8,3 +8,5 @@ EXTRA_IMAGE_FEATURES += " allow-empty-password empty-root-password allow-root-lo
 
 IMAGE_INSTALL += "openssh"
 IMAGE_INSTALL += "python3-django-ptest"
+
+QB_MEM = "-m 2048"
