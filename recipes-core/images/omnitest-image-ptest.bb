@@ -177,6 +177,9 @@ gssdp-ptest \
 gupnp-ptest \
 gupnp-av-ptest \
 gupnp-igd-ptest \
+\
+exiv2-ptest \
+freerdp-ptest \
 "
 
 QB_MEM = "-m 2048"
