@@ -21,6 +21,8 @@ count_of_new=`grep -cv '^$' ./${branch}-new | tr -d '\n'`
 echo "Subject: CVE report - $branch - $today" > ${branch}.email
 echo >> ${branch}.email
 
+echo "Do you see a recipe on this list that is important for you? Help us busting some CVEs by sending some patches." >> ${branch}.email
+echo >> ${branch}.email
 echo "List of all open CVEs (${count_of_all}, out of which new this week: ${count_of_new}):" >> ${branch}.email
 
 cat prefixed_${branch} >> ${branch}.email
