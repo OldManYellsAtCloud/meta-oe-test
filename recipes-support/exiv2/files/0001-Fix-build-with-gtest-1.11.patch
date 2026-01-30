@@ -1,0 +1,35 @@
+From 14d482f9e2353e195149fff196e65cb3a6b46e25 Mon Sep 17 00:00:00 2001
+From: Gyorgy Sarvari <skandigraun@gmail.com>
+Date: Fri, 18 Jun 2021 18:53:46 +0200
+Subject: [PATCH] Fix build with gtest 1.11
+
+From: Antonio Rojas <arojas@archlinux.org>
+
+INSTANTIATE_TYPED_TEST_CASE_P requires a non-empty prefix now
+
+Upstream-Status: Backport [https://github.com/Exiv2/exiv2/commit/c069e36605f05e8e58bf964e5ecbde04efb90a20]
+Signed-off-by: Gyorgy Sarvari <skandigraun@gmail.com>
+---
+ unitTests/test_slice.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/unitTests/test_slice.cpp b/unitTests/test_slice.cpp
+index bbc6785..ab51cda 100644
+--- a/unitTests/test_slice.cpp
++++ b/unitTests/test_slice.cpp
+@@ -422,12 +422,12 @@ REGISTER_TYPED_TEST_CASE_P(slice, atAccess, iteratorAccess, constructionFailsFro
+                            constMethodsPreserveConst);
+ 
+ typedef ::testing::Types<const std::vector<int>, std::vector<int>, int*, const int*> test_types_t;
+-INSTANTIATE_TYPED_TEST_CASE_P(, slice, test_types_t);
++INSTANTIATE_TYPED_TEST_CASE_P(slice, slice, test_types_t);
+ 
+ REGISTER_TYPED_TEST_CASE_P(mutableSlice, iterators, at);
+ typedef ::testing::Types<std::vector<int>, int*> mut_test_types_t;
+-INSTANTIATE_TYPED_TEST_CASE_P(, mutableSlice, mut_test_types_t);
++INSTANTIATE_TYPED_TEST_CASE_P(slice, mutableSlice, mut_test_types_t);
+ 
+ REGISTER_TYPED_TEST_CASE_P(dataBufSlice, successfulConstruction, failedConstruction);
+ typedef ::testing::Types<DataBuf&, const DataBuf&> data_buf_types_t;
+-INSTANTIATE_TYPED_TEST_CASE_P(, dataBufSlice, data_buf_types_t);
++INSTANTIATE_TYPED_TEST_CASE_P(slice, dataBufSlice, data_buf_types_t);
