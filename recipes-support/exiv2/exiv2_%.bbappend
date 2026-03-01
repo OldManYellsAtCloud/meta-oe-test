@@ -11,7 +11,8 @@ SRC_URI += "file://run-ptest \
             file://CVE-2021-37618-ptest.patch.skip-patching \
             file://CVE-2021-37619-ptest.patch.skip-patching \
             file://CVE-2021-37620-ptest.patch.skip-patching \
-            file://CVE-2021-37621-ptest.patch.skip-patching"
+            file://CVE-2021-37621-ptest.patch.skip-patching \
+            file://CVE-2021-37622-ptest.patch.skip-patching"
 
 DEPENDS += "${@bb.utils.contains('PTEST_ENABLED', '1', 'googletest', '', d)}"
 
